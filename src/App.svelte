@@ -5,10 +5,13 @@
 	let stories = [];
 	let currentItems = 1;
 	let amount = 1;
+	let countStories;
 
 	async function getStories() {
 		const res = await fetch("api/stories/all.json");
-		const stories = await res.json();
+		stories = await res.json();
+		countStories = stories.length
+		// console.log(count)
 		return stories;
 	}
 
@@ -17,9 +20,6 @@
 		currentItems = currentItems + amount;
 	}
 
-	function countStories() {
-		return stories.length;
-	}
 </script>
 
 <h1 class="display-1">Welcome!</h1>
@@ -43,25 +43,25 @@
 	</button>
 {/if}
 
-{#if currentItems != countStories()}
-	<button
-		type="button"
-		id="loadNext"
-		class="btn btn-outline-primary"
-		on:click={() => handleClick(1)}
-	>
-		Volgende
-	</button>
+{#if currentItems != countStories}
+<button
+	type="button"
+	id="loadNext"
+	class="btn btn-outline-primary"
+	on:click={() => handleClick(1)}
+>
+	Volgende
+</button>
 {/if}
 
-<ul class="list-group">
-	{#await getStories()}
-		<p>loading</p>
-	{:then stories}
+{#await getStories()}
+	<p>loading</p>
+{:then stories}
+	<ul class="list-group">
 		{#each stories.slice(currentItems - 1, currentItems) as story}
 			<li class="list-group-item">{story.title}</li>
 		{/each}
-	{:catch error}
-		<p style="color: red">error</p>
-	{/await}
-</ul>
+	</ul>
+{:catch error}
+	<p style="color: red">error</p>
+{/await}
