@@ -4,13 +4,15 @@
 
 	let stories = [];
 	let currentItems = 1;
-	let amount = 1;
+	let amount = 7;
 	let countStories;
+	let title = "A Thijs website"
+	let subtitle = "This isn't even my final form 🐲";
 
 	async function getStories() {
 		const res = await fetch("api/stories/all.json");
 		stories = await res.json();
-		countStories = stories.length
+		countStories = stories.length;
 		// console.log(count)
 		return stories;
 	}
@@ -19,49 +21,58 @@
 		console.log(stories);
 		currentItems = currentItems + amount;
 	}
-
 </script>
 
-<h1 class="display-1">Welcome!</h1>
-
-{#if currentItems != 1}
-	<button
-		type="button"
-		id="loadPrevious"
-		class="btn btn-outline-primary"
-		on:click={() => handleClick(-1)}
-	>
-		Vorige
-	</button>
-{:else}
-	<button
-		type="button"
-		id="loadPreviousDeactive"
-		class="btn btn-outline-disabled"
-	>
-		Vorige
-	</button>
-{/if}
-
-{#if currentItems != countStories}
-<button
-	type="button"
-	id="loadNext"
-	class="btn btn-outline-primary"
-	on:click={() => handleClick(1)}
->
-	Volgende
-</button>
-{/if}
+<div class="jumbotron jumbotron-fluid">
+	<div class="container">
+		<h1 class="display-4">{title}</h1>
+		<p class="lead">
+			{subtitle}
+		</p>
+	</div>
+</div>
 
 {#await getStories()}
 	<p>loading</p>
 {:then stories}
-	<ul class="list-group">
-		{#each stories.slice(currentItems - 1, currentItems) as story}
-			<li class="list-group-item">{story.title}</li>
+	<div class="card-columns">
+		{#each stories as story}
+			{#if story.image && story.title}
+				<div class="card">
+					<img
+						src={story.image}
+						class="card-img-top"
+						object-fit="cover"
+						width="100%"
+						height="200rem"
+						alt={story.imageAuthor}
+					/>
+					<div class="card-body">
+						<h5 class="card-title">{story.title}</h5>
+						<p class="card-text">{story.content}</p>
+					</div>
+				</div>
+			{:else if story.image}
+				<div class="card">
+					<img
+						src={story.image}
+						class="card-img-top"
+						object-fit="cover"
+						width="100%"
+						height="200rem"
+						alt={story.imageAuthor}
+					/>
+				</div>
+			{:else if story.title}
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">{story.title}</h5>
+						<p class="card-text">{story.content}</p>
+					</div>
+				</div>
+			{/if}
 		{/each}
-	</ul>
+	</div>
 {:catch error}
 	<p style="color: red">error</p>
 {/await}
