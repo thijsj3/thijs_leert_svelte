@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from "svelte";
 	import "bootstrap/dist/css/bootstrap.css";
+	import Story from './Story.svelte';
 
 	let stories = [];
 	let currentItems = 1;
@@ -37,10 +38,7 @@
 	<p>loading</p>
 {:then stories}
 		{#each stories as story}
-			<div class="card mb-3 text-center">
-					<h2 class="card-title">{story.title}</h2>
-					<p class="card-text">{story.content}</p>
-			</div>
+			<Story title={story.title} content={story.content}/>
 		{/each}
 {:catch error}
 	<p style="color: red">error</p>
