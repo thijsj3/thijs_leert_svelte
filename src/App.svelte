@@ -9,6 +9,7 @@
 	async function getStories() {
 		const res = await fetch("api/stories/all.json");
 		stories = await res.json();
+		stories = stories.reverse();
 		return stories;
 	}
 </script>
@@ -25,7 +26,7 @@
 <img
 	src={coverImage}
 	class="enough-space-for-picture rounded "
-	alt="header_image by unsplash.com/@halacious"
+	alt="header_image by unsplash.com/@halacious" 
 />
 
 <h1 class="title">{title}</h1>
