@@ -7,9 +7,9 @@
 		"https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80";
 
 	async function getStories() {
-		const res = await fetch("http://127.0.0.1:8000/stories");
+		const res = await fetch("http://backend:8000/stories");
 		stories = await res.json();
-		// stories = stories.reverse();
+		stories = stories.reverse();
 		return stories;
 	}
 </script>
